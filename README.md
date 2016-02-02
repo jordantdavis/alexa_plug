@@ -8,4 +8,4 @@ Echo and the Alexa Skills Kit.
 Add alexa_plug to your list of dependencies in `mix.exs`:
 
     def deps do
-        [{:alexa_plug, "~> 0.0.1"}]
+        [{:alexa_plug, "~> 0.1.0"}]

@@ -91,7 +91,7 @@ defmodule AlexaPlug.Plugs do
     assign_to_ask_request(conn, :session_attributes, session_attributes)
   end
 
-  @docs """
+  @doc """
   Fetch the user ID from an Alexa Skills Kit request.
 
   Assigns `conn.assigns[:ask_request][:user_id]` the value for the

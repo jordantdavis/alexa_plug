@@ -203,6 +203,9 @@ from an Alexa Skills Kit request</p>
     <a href="#fetch_echo_user_id/2">fetch_echo_user_id(conn, opts \\ nil)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Fetch the user ID from an Alexa Skills Kit request</p>
+</div>
+  
 </div>
 
   </div>
@@ -324,7 +327,10 @@ request field <code class="inline">request.intent.slots</code> or nil.</p>
   </div>
   
   <section class="docstring">
-    
+    <p>Fetch the user ID from an Alexa Skills Kit request.</p>
+<p>Assigns <code class="inline">conn.assigns[:ask_request][:user_id]</code> the value for the
+request field <code class="inline">session.user.userId</code> or nil.</p>
+
   </section>
 </div>
 

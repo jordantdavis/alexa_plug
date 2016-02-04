@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.4">
-    <title>AlexaPlug.Plugs – alexa_plug v0.1.0</title>
+    <title>AlexaPlug.Plugs – alexa_plug v0.2.0</title>
     <link rel="stylesheet" href="dist/app-1e374caa3d.css" />
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -27,7 +27,7 @@
         alexa_plug
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.1.0
+        v0.2.0
       </h2>
     </div>
     
@@ -59,7 +59,7 @@
 
 
       <h1>
-        <small class="visible-xs">alexa_plug v0.1.0</small>
+        <small class="visible-xs">alexa_plug v0.2.0</small>
         AlexaPlug.Plugs
         
         
@@ -67,8 +67,8 @@
 
       
         <section id="moduledoc" class="docstring">
-          <p>A collection of plugs for extracting data from Amazon Echo requests.</p>
-<p>The plugs fetch specific data from Amazon Echo requests and places
+          <p>A collection of plugs for extracting data from Alexa Skills Kit requests.</p>
+<p>The plugs fetch specific data from Alexa Skills Kit requests and places
 that data in <code class="inline">conn.assigns</code>.</p>
 <h2>Usage</h2>
 <pre><code class="elixir">import AlexaPlug.Plugs</code></pre>
@@ -84,6 +84,9 @@ that data in <code class="inline">conn.assigns</code>.</p>
         &quot;weekly&quot;: false,
         &quot;monthly&quot;: false
       }
+    },
+    &quot;user&quot;: {
+      &quot;userId&quot;: &quot;amzn1.account.AM3B00000000000000000000000&quot;
     },
     ...
   },
@@ -103,6 +106,7 @@ that data in <code class="inline">conn.assigns</code>.</p>
 }</code></pre>
 <p>and the following plugs are being used:</p>
 <pre><code class="elixir">plug :fetch_echo_session_attributes
+plug :fetch_echo_user_id
 plug :fetch_echo_request_type
 plug :fetch_echo_intent_type
 plug :fetch_echo_slots
@@ -112,16 +116,19 @@ plug :fetch_echo_slots
 plug :fetch_echo_request_data</code></pre>
 <p>then <code class="inline">conn.assigns</code> will contain:</p>
 <pre><code class="elixir">%{
-  session_attributes: %{
-    &quot;supportedHoroscopePeriods&quot; =&gt; %{
-      &quot;daily&quot; =&gt; true,
-      &quot;weekly&quot; =&gt; false,
-      &quot;monthly&quot; =&gt; false
-    }
-  },
-  request_type: &quot;IntentRequest&quot;,
-  intent_type: &quot;GetZodiacHoroscopeIntent&quot;,
-  slots: %{&quot;ZodiacSign&quot; =&gt; &quot;virgo&quot;}
+  ask_request: %{
+    session_attributes: %{
+      &quot;supportedHoroscopePeriods&quot; =&gt; %{
+        &quot;daily&quot; =&gt; true,
+        &quot;weekly&quot; =&gt; false,
+        &quot;monthly&quot; =&gt; false
+      }
+    },
+    user_id: &quot;amzn1.account.AM3B00000000000000000000000&quot;,
+    request_type: &quot;IntentRequest&quot;,
+    intent_type: &quot;GetZodiacHoroscopeIntent&quot;,
+    slots: %{&quot;ZodiacSign&quot; =&gt; &quot;virgo&quot;}
+  }
 }</code></pre>
 <p>To see more info on all request types see the
 <a href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-interface-reference">ASK Interface Reference</a>
@@ -150,7 +157,7 @@ for details.</p>
     <a href="#fetch_echo_intent_type/2">fetch_echo_intent_type(conn, opts \\ nil)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Fetch the intent type from an Amazon Echo request</p>
+    <div class="summary-synopsis"><p>Fetch the intent type from an Alexa Skills Kit request</p>
 </div>
   
 </div>
@@ -160,7 +167,7 @@ for details.</p>
   </div>
   
     <div class="summary-synopsis"><p>Fetch the session attributes, request type, intent type, and slots
-from an Amazon Echo request</p>
+from an Alexa Skills Kit request</p>
 </div>
   
 </div>
@@ -169,7 +176,7 @@ from an Amazon Echo request</p>
     <a href="#fetch_echo_request_type/2">fetch_echo_request_type(conn, opts \\ nil)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Fetch the request type from an Amazon Echo request</p>
+    <div class="summary-synopsis"><p>Fetch the request type from an Alexa Skills Kit request</p>
 </div>
   
 </div>
@@ -178,7 +185,7 @@ from an Amazon Echo request</p>
     <a href="#fetch_echo_session_attributes/2">fetch_echo_session_attributes(conn, opts \\ nil)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Fetch the session attributes from an Amazon Echo request</p>
+    <div class="summary-synopsis"><p>Fetch the session attributes from an Alexa Skills Kit request</p>
 </div>
   
 </div>
@@ -187,8 +194,14 @@ from an Amazon Echo request</p>
     <a href="#fetch_echo_slots/2">fetch_echo_slots(conn, opts \\ nil)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Fetch the slots from an Amazon Echo request</p>
+    <div class="summary-synopsis"><p>Fetch the slots from an Alexa Skills Kit request</p>
 </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#fetch_echo_user_id/2">fetch_echo_user_id(conn, opts \\ nil)</a>
+  </div>
   
 </div>
 
@@ -222,8 +235,9 @@ from an Amazon Echo request</p>
   </div>
   
   <section class="docstring">
-    <p>Fetch the intent type from an Amazon Echo request.</p>
-<p>Assigns <code class="inline">conn.assigns</code> the value for the request field <code class="inline">request.intent.name</code> or nil.</p>
+    <p>Fetch the intent type from an Alexa Skills Kit request.</p>
+<p>Assigns <code class="inline">conn.assigns[:ask_request][:intent_type]</code> the value for
+the request field <code class="inline">request.intent.name</code> or nil.</p>
 
   </section>
 </div>
@@ -238,7 +252,7 @@ from an Amazon Echo request</p>
   
   <section class="docstring">
     <p>Fetch the session attributes, request type, intent type, and slots
-from an Amazon Echo request.</p>
+from an Alexa Skills Kit request.</p>
 <p>Calls all the other plugs on defined in this module.</p>
 
   </section>
@@ -253,8 +267,9 @@ from an Amazon Echo request.</p>
   </div>
   
   <section class="docstring">
-    <p>Fetch the request type from an Amazon Echo request.</p>
-<p>Assigns <code class="inline">conn.assigns</code> the value for the request field <code class="inline">request.type</code> or nil.</p>
+    <p>Fetch the request type from an Alexa Skills Kit request.</p>
+<p>Assigns <code class="inline">conn.assigns[:ask_request][:request_type]</code> the value for
+the request field <code class="inline">request.type</code> or nil.</p>
 
   </section>
 </div>
@@ -268,8 +283,9 @@ from an Amazon Echo request.</p>
   </div>
   
   <section class="docstring">
-    <p>Fetch the session attributes from an Amazon Echo request.</p>
-<p>Assigns <code class="inline">conn.assigns</code> the value for the request field <code class="inline">session.attributes</code> or nil.</p>
+    <p>Fetch the session attributes from an Alexa Skills Kit request.</p>
+<p>Assigns <code class="inline">conn.assigns[:ask_request][:session_attributes]</code> the value
+for the request field <code class="inline">session.attributes</code> or nil.</p>
 
   </section>
 </div>
@@ -283,7 +299,7 @@ from an Amazon Echo request.</p>
   </div>
   
   <section class="docstring">
-    <p>Fetch the slots from an Amazon Echo request.</p>
+    <p>Fetch the slots from an Alexa Skills Kit request.</p>
 <p>For the given slots:</p>
 <pre><code class="elixir">&quot;slots&quot;: {
   &quot;(key)&quot;: {
@@ -291,9 +307,24 @@ from an Amazon Echo request.</p>
     &quot;value&quot;: &quot;virgo&quot;
   }
 }</code></pre>
-<p>A slots map is created using the <strong>slot key</strong> (not the slot name) and the <strong>slot value</strong> as key-value pairs.</p>
-<p>Assigns <code class="inline">conn.assigns</code> the value for the request field <code class="inline">request.intent.slots</code> or nil.</p>
+<p>A slots map is created using the <strong>slot key</strong> (not the slot name)
+and the <strong>slot value</strong> as key-value pairs.</p>
+<p>Assigns <code class="inline">conn.assigns[:ask_request][:slots]</code> the value for the
+request field <code class="inline">request.intent.slots</code> or nil.</p>
 
+  </section>
+</div>
+<div class="detail" id="fetch_echo_user_id/2">
+  <div class="detail-header">
+    <a href="#fetch_echo_user_id/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">fetch_echo_user_id(conn, opts \\ nil)</span>
+      
+  </div>
+  
+  <section class="docstring">
+    
   </section>
 </div>
 

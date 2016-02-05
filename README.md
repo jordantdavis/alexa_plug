@@ -1,5 +1,7 @@
 # AlexaPlug
 
+[![Build Status](https://travis-ci.org/jordantdavis/alexa_plug.svg?branch=master)](https://travis-ci.org/jordantdavis/alexa_plug)
+
 A simple set of plugs and utilities for interfacing with the Amazon
 Echo and the Alexa Skills Kit.
 

@@ -27,8 +27,8 @@ defmodule AlexaPlug.Mixfile do
   defp deps do
     [{:plug, "~> 1.1.0"},
      {:excoveralls, "~> 0.4", only: :test},
-     {:ex_doc, "~> 0.11.4", only: :doc},
-     {:earmark, "~> 0.2.1", only: :doc}]
+     {:ex_doc, "~> 0.11.4", only: :dev},
+     {:earmark, "~> 0.2.1", only: :dev}]
   end
 
   defp package do
